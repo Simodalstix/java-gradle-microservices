@@ -1,3 +1,7 @@
+plugins {
+    id 'java-library'
+}
+
 dependencies {
     api 'com.github.pagehelper:pagehelper-spring-boot-starter'
     api 'com.github.pagehelper:pagehelper'
@@ -7,6 +11,7 @@ dependencies {
     api 'org.springframework.data:spring-data-commons'
     api 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter'
     api 'net.logstash.logback:logstash-logback-encoder'
+    api 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }

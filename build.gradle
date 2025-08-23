@@ -79,4 +79,8 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+    
+    tasks.withType(Jar) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
