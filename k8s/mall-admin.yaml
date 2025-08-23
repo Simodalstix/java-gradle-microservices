@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mall-admin
+  template:
+    metadata:
+      labels:
+        app: mall-admin
+    spec:
+      containers:
+      - name: mall-admin
+        image: mall/mall-admin:1.0-SNAPSHOT
+        ports:
+        - containerPort: 8180
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-admin-service
+spec:
+  selector:
+    app: mall-admin
+  ports:
+  - port: 8180
+    targetPort: 8180

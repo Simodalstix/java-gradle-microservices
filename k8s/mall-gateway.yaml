@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mall-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mall-gateway
+  template:
+    metadata:
+      labels:
+        app: mall-gateway
+    spec:
+      containers:
+      - name: mall-gateway
+        image: mall/mall-gateway:1.0-SNAPSHOT
+        ports:
+        - containerPort: 8201
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mall-gateway-service
+spec:
+  selector:
+    app: mall-gateway
+  ports:
+  - port: 8201
+    targetPort: 8201
+  type: LoadBalancer
