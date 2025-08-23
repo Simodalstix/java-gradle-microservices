@@ -1,0 +1,23 @@
+plugins {
+    id 'com.palantir.docker'
+}
+
+dependencies {
+    implementation project(':mall-mbg')
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'cn.dev33:sa-token-spring-boot3-starter'
+    implementation 'cn.dev33:sa-token-redis-jackson'
+    implementation 'cn.dev33:sa-token-jwt'
+    implementation 'org.apache.commons:commons-pool2'
+    implementation 'de.codecentric:spring-boot-admin-starter-client'
+}
+
+docker {
+    name "mall/${project.name}:${project.version}"
+    dockerfile file('Dockerfile')
+    files bootJar.archiveFile.get()
+    buildArgs(['JAR_FILE': "${bootJar.archiveFileName.get()}"])
+}

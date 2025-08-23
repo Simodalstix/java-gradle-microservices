@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+  # Infrastructure
+  nacos:
+    image: nacos/nacos-server:v2.3.0
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=mysql
+      - MYSQL_SERVICE_DB_NAME=nacos_devtest
+      - MYSQL_SERVICE_USER=nacos
+      - MYSQL_SERVICE_PASSWORD=nacos
+    ports:
+      - "8848:8848"
+    depends_on:
+      - mysql
+    networks:
+      - mall-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mall
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - mall-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - mall-network
+
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - mall-network
+
+  # Core Services
+  mall-gateway:
+    image: mall/mall-gateway:1.0-SNAPSHOT
+    ports:
+      - "8201:8201"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+      - redis
+    networks:
+      - mall-network
+
+  mall-auth:
+    image: mall/mall-auth:1.0-SNAPSHOT
+    ports:
+      - "8401:8401"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+    networks:
+      - mall-network
+
+  # Business Services
+  mall-admin:
+    image: mall/mall-admin:1.0-SNAPSHOT
+    ports:
+      - "8180:8180"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+    networks:
+      - mall-network
+
+  mall-portal:
+    image: mall/mall-portal:1.0-SNAPSHOT
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+    networks:
+      - mall-network
+
+  mall-search:
+    image: mall/mall-search:1.0-SNAPSHOT
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+      - elasticsearch
+    networks:
+      - mall-network
+
+  mall-monitor:
+    image: mall/mall-monitor:1.0-SNAPSHOT
+    ports:
+      - "8101:8101"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - nacos
+    networks:
+      - mall-network
+
+volumes:
+  mysql-data:
+
+networks:
+  mall-network:
+    driver: bridge

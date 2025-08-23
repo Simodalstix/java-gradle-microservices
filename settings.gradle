@@ -1,0 +1,11 @@
+rootProject.name = 'mall-swarm-gradle'
+
+include 'mall-common'
+include 'mall-mbg'
+include 'mall-admin'
+include 'mall-auth'
+include 'mall-gateway'
+include 'mall-monitor'
+include 'mall-portal'
+include 'mall-search'
+include 'mall-demo'

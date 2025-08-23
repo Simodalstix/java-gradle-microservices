@@ -1,0 +1,22 @@
+dependencies {
+    api 'com.github.pagehelper:pagehelper-spring-boot-starter'
+    api 'com.github.pagehelper:pagehelper'
+    api 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    api 'com.alibaba:druid-spring-boot-starter'
+    api 'mysql:mysql-connector-java'
+    api 'org.springframework.data:spring-data-commons'
+    api 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter'
+    api 'net.logstash.logback:logstash-logback-encoder'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+// Disable bootJar for library modules
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}

@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2' apply false
+    id 'io.spring.dependency-management' version '1.1.4' apply false
+    id 'com.palantir.docker' version '0.35.0' apply false
+}
+
+allprojects {
+    group = 'com.macro.mall'
+    version = '1.0-SNAPSHOT'
+    
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+    
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+        implementation 'cn.hutool:hutool-all'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+    
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:2023.0.1.0"
+        }
+        
+        dependencies {
+            dependency 'com.github.pagehelper:pagehelper-spring-boot-starter:2.1.0'
+            dependency 'com.github.pagehelper:pagehelper:6.1.0'
+            dependency 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+            dependency 'com.alibaba:druid-spring-boot-starter:1.2.9'
+            dependency 'cn.hutool:hutool-all:5.8.16'
+            dependency 'com.github.xiaoymin:knife4j-gateway-spring-boot-starter:4.5.0'
+            dependency 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.5.0'
+            dependency 'org.mybatis.generator:mybatis-generator-core:1.4.2'
+            dependency 'org.mybatis:mybatis:3.5.14'
+            dependency 'mysql:mysql-connector-java:8.0.29'
+            dependency 'org.springframework.data:spring-data-commons:3.2.2'
+            dependency 'com.aliyun.oss:aliyun-sdk-oss:2.5.0'
+            dependency 'net.logstash.logback:logstash-logback-encoder:5.3'
+            dependency 'de.codecentric:spring-boot-admin-starter-server:3.2.2'
+            dependency 'de.codecentric:spring-boot-admin-starter-client:3.2.2'
+            dependency 'io.minio:minio:8.4.5'
+            dependency 'com.alipay.sdk:alipay-sdk-java:4.38.61.ALL'
+            dependency 'cn.dev33:sa-token-reactor-spring-boot3-starter:1.37.0'
+            dependency 'cn.dev33:sa-token-spring-boot3-starter:1.37.0'
+            dependency 'cn.dev33:sa-token-redis-jackson:1.37.0'
+            dependency 'cn.dev33:sa-token-jwt:1.37.0'
+        }
+    }
+    
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += ['-parameters']
+    }
+    
+    test {
+        useJUnitPlatform()
+    }
+}

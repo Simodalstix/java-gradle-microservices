@@ -1,0 +1,15 @@
+dependencies {
+    api project(':mall-common')
+    implementation 'org.mybatis.generator:mybatis-generator-core'
+    implementation 'org.mybatis:mybatis'
+}
+
+// Disable bootJar for library modules
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
