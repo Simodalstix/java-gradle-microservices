@@ -69,6 +69,7 @@ subprojects {
             dependency 'cn.dev33:sa-token-spring-boot3-starter:1.37.0'
             dependency 'cn.dev33:sa-token-redis-jackson:1.37.0'
             dependency 'cn.dev33:sa-token-jwt:1.37.0'
+            dependency 'com.alibaba:fastjson:1.2.83'
         }
     }
     

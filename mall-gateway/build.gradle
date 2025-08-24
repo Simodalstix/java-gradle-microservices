@@ -11,6 +11,7 @@ dependencies {
     implementation 'com.github.xiaoymin:knife4j-gateway-spring-boot-starter'
     implementation 'cn.dev33:sa-token-reactor-spring-boot3-starter'
     implementation 'cn.dev33:sa-token-redis-jackson'
+    implementation 'cn.dev33:sa-token-jwt'
     implementation 'org.apache.commons:commons-pool2'
     implementation 'de.codecentric:spring-boot-admin-starter-client'
 }
