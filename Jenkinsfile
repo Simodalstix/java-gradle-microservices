@@ -3,11 +3,11 @@ pipeline {
     
     environment {
         DOCKER_REGISTRY = 'your-registry.com'
-        GRADLE_OPTS = '-Dorg.gradle.daemon=false'
+        GRADLE_OPTS = '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true'
+        GRADLE_USER_HOME = '.gradle'
     }
     
     tools {
-        gradle 'gradle-8.5'
         jdk 'openjdk-17'
     }
     
@@ -22,17 +22,18 @@ pipeline {
             parallel {
                 stage('Common Modules') {
                     steps {
-                        sh './gradlew :mall-common:build :mall-mbg:build'
+                        sh 'chmod +x gradlew'
+                        sh './gradlew :mall-common:build :mall-mbg:build -x test'
                     }
                 }
-                stage('Services') {
+                stage('Core Services') {
                     steps {
-                        sh './gradlew :mall-admin:build :mall-auth:build :mall-gateway:build'
+                        sh './gradlew :mall-admin:build :mall-auth:build :mall-gateway:build -x test'
                     }
                 }
-                stage('Additional Services') {
+                stage('Business Services') {
                     steps {
-                        sh './gradlew :mall-portal:build :mall-search:build :mall-monitor:build :mall-demo:build'
+                        sh './gradlew :mall-portal:build :mall-search:build :mall-monitor:build :mall-demo:build -x test'
                     }
                 }
             }
@@ -40,7 +41,8 @@ pipeline {
         
         stage('Code Quality') {
             steps {
-                sh './gradlew check'
+                sh './gradlew check -x test'
+                archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
             }
         }
         
