@@ -105,21 +105,13 @@ pipeline {
     
     post {
         always {
-            publishHTML([
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'build/reports/tests/test',
-                reportFiles: 'index.html',
-                reportName: 'Test Report'
-            ])
+            echo 'Pipeline completed'
+        }
+        success {
+            echo 'Build successful - artifacts ready for deployment'
         }
         failure {
-            emailext (
-                subject: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-                body: "Build failed. Check console output at ${env.BUILD_URL}",
-                to: "lastpolar@gmail.com"
-            )
+            echo 'Build failed - check console output for details'
         }
     }
 }
