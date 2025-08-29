@@ -8,11 +8,20 @@ plugins {
 allprojects {
     group = 'com.macro.mall'
     version = '1.0-SNAPSHOT'
+    description = 'Enterprise E-Commerce Microservices Platform'
     
     repositories {
         maven { url 'https://maven.aliyun.com/repository/public' }
         mavenCentral()
     }
+}
+
+// Project metadata
+extensions.configure(org.gradle.api.plugins.ExtraPropertiesExtension) {
+    set('projectName', 'E-Commerce Microservices Platform')
+    set('projectDescription', 'Production-ready microservices demonstrating enterprise architecture patterns')
+    set('projectUrl', 'https://github.com/Simodalstix/java-gradle-microservices')
+    set('license', 'MIT')
 }
 
 subprojects {
